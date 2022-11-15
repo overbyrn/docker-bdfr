@@ -29,6 +29,24 @@ Docker version of [bulk downloader for reddit](https://github.com/aliparlakci/bu
 
 1. rename `options.yaml.example` -> `options.yaml`
 1. rename `default_config.cfg` -> `config.cfg`
-2. modify and put in a directory (will be volume mounted)
-3. choose a download directory (will be volume mounted)
-4. `docker run --name bdfr -v your/download/location:/downloads -v your/config/directory/containing/optionsyaml:/config overbyrn/docker-bdfr`
+2. modify and put in a directory (ideally a persistent mounted volume)
+3. choose a download directory (ideally a persistent mounted volume)
+4. run docker container:
+```
+docker run -d \  
+-v /your/config/location:/config \  
+-v /your/download/location/downloads \  
+-p 7634:7634 \  
+-e BDFR_POSTLIMIT=9999 \
+-e BDFR_WAIT=300 \
+-e BDFR_AUTH=false \
+-e BDFR_VERBOSE=0 \
+-e BDFR_NODUPES=true \
+-e BDFR_SORT=new \
+-e BDFR_DETOX=false \
+-e BDFR_RDFIND=false \
+-e BDFR_SYMLINKS=false \
+--name bdfr \
+overbyrn/docker-bdfr
+```
+
