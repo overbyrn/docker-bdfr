@@ -1,20 +1,26 @@
 #!/bin/bash
 
-# Multi-line:
 # docker run -d \
-# -v /appdata/test/config:/config \
-# -v /appdata/test/downloads \
-# -e SLEEP_INTERVAL=60
+# -v /appdata/bdfr/config:/config \
+# -v /appdata/bdfr/downloads \
 # -p 7634:7634 \
-# --name test \
-# overbyrn/docker/test
+# -e BDFR_POSTLIMIT=9999 \
+# -e BDFR_WAIT=300 \
+# -e BDFR_AUTH=false \
+# -e BDFR_VERBOSE=0 \
+# -e BDFR_NODUPES=true \
+# -e BDFR_SORT=new \
+# -e BDFR_DETOX=false \
+# -e BDFR_RDFIND=false \
+# -e BDFR_SYMLINKS=false \
+# --name bdfr \
+# overbyrn/docker-bdfr
 #
-# One-liner (interactive, destroy container upon exit)
-# docker run --rm -it -v /appdata/test/config:/config -v /appdata/test/downloads:/downloads -e SLEEP_INTERVAL=60 -p 7634:7634 --name test overbyrn/docker-test
-#
-# Example:
-# docker run --rm -it -v /appdata/test/config:/config -v /appdata/test/downloads:/downloads -e BDFR_WAIT=60 -e BDFR_VERBOSE=2 -p 7634:7634 --name test overbyrn/docker-test
-#
+
+# TO DO
+# 1. rdfind: turn off results log or implement per run named / timestamped log
+# 2. bdfr: make session type configurable to support all (download, clone & archive)
+# 3. bdfr: review available config options, ensure all are supported via options.yaml or command line as needed
 
 
 #Debug
