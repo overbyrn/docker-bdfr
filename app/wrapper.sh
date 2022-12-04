@@ -23,18 +23,24 @@
 # 3. bdfr: review available config options, ensure all are supported via options.yaml or command line as needed
 
 
+# CHANGELOG
+# 11/22/2022 - CHG: allow for single-run.  if wait time <=0 don't loop
+#            - NEW: add ability to delay for random or specific time before proceeding
+
+
 #Debug
 [[ $DEBUG ]] && set -x
 
 # INIT VARS - BDFR specific. Values here will override those set in options.yaml
 #
-BDFR_POSTLIMIT="${BDFR_POSTLIMIT:-}"		# default limit of number of submissions retrieve
-BDFR_WAIT="${BDFR_WAIT:-60}"				# default wait time between bdfr runs. unit: seconds
+BDFR_POSTLIMIT="${BDFR_POSTLIMIT:-}"		# number of submissions retrieve. note: there is a hard limit of 1000. This is governed by Reddit
+BDFR_WAIT="${BDFR_WAIT:-60}"				# default wait time between bdfr runs. set to zero to disable. unit: seconds
 BDFR_AUTH="${BDFR_AUTH:-false}"				# default run without an authenticated reddit session
 BDFR_USER="${BDFR_USER:-}"					# the user to scrape as when running an authenticated session
 BDFR_VERBOSE=${BDFR_VERBOSE:-}				# NULL or 0=INFO, 1=DEBUG, 2=FULL. increase the verbosity of the program
 BDFR_NODUPES="${BDFR_NODUPES:-true}"		# will not redownload files if they already exist somewhere in the download folder tree
 BDFR_SORT="${BDFR_SORT:-}"					# sort type. options: controversial, hot, new, relevance (only available when using --search), rising, top
+BDFR_OFFSET="${BDFR_OFFSET:--1}"			# -1=offset disabled, 0=use random offset, all other values (secs) use as offset
 #
 # INIT VARS - Other
 #
@@ -96,6 +102,21 @@ if [ ${BDFR_NODUPES,,} == "true" ]; then
   _OPTS="${_OPTS} --no-dupes"
 fi
 
+# Offset Check & Wait
+if [ "${BDFR_OFFSET}" -lt 0 ]; then
+  log "Offset Disabled"
+  OFFSET=0
+elif [ "${BDFR_OFFSET}" -eq 0 ]; then
+  MINWAIT=3600		# offset should be no less than 1hr
+  MAXWAIT=86400		# offset should be no more than 24 hrs
+  OFFSET=$((MINWAIT+RANDOM % (MAXWAIT-MINWAIT)))
+  printf 'Using random offset: %02dh:%02dm:%02ds\n' $((OFFSET/3600)) $((OFFSET%3600/60)) $((OFFSET%60))
+else
+  OFFSET=${BDFR_OFFSET}
+  printf 'Using fixed offset: %02dh:%02dm:%02ds\n' $((OFFSET/3600)) $((OFFSET%3600/60)) $((OFFSET%60))
+fi
+! $DEBUG && countdown ${OFFSET} "" || sleep ${OFFSET}s
+
 # Run BDFR
 log "Running BDFR"
 python -m bdfr download /downloads $_OPTS
@@ -126,5 +147,9 @@ if [ "${BDFR_SYMLINKS,,}" = "true" ]; then
   log "symlinks done"
 fi
 
-log "Waiting for ${BDFR_WAIT} seconds"
-! $DEBUG && countdown ${BDFR_WAIT} "until next run" || sleep ${BDFR_WAIT}s
+if [ "${BDFR_WAIT}" -gt 0 ]; then
+  log "Waiting for ${BDFR_WAIT} seconds"
+  ! $DEBUG && countdown ${BDFR_WAIT} "until next run" || sleep ${BDFR_WAIT}s
+else
+  /run/s6/basedir/bin/halt
+fi
