@@ -1,19 +1,10 @@
-# Configuration Precedence:
-# 1. Command Line Arguments
-# 2. Options File (this)
-# 3. Global Config File (config.cfg)
-#
-skip: [mp4, avi, mov]
+skip: [txt, mp4, avi, mov]
 file_scheme: "{TITLE}_[POSTID-{POSTID}]"
-limit: 10
 sort: new
-no_dupes: true
-verbose: 0
 log: /config/BDFR.log
-#backup_log_count: 10
-max_wait_time: 60
+max_wait_time: 30
 search_existing: false  # https://github.com/aliparlakci/bulk-downloader-for-reddit/issues/651
 subreddit:
   - earthporn
 skip_domain:
-  - i.minus.com  
+  - pics.example.com
