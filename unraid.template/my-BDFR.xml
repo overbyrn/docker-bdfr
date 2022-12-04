@@ -2,7 +2,7 @@
 <Container version="2">
   <Name>BDFR</Name>
   <Repository>overbyrn/docker-bdfr</Repository>
-  <Registry/>
+  <Registry>https://hub.docker.com/repository/docker/overbyrn/docker-bdfr</Registry>
   <Network>bridge</Network>
   <MyIP/>
   <Shell>sh</Shell>
@@ -13,24 +13,25 @@
   <Category/>
   <WebUI/>
   <TemplateURL/>
-  <Icon/>
+  <Icon>https://raw.githubusercontent.com/overbyrn/assets/main/bdfr.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
-  <DateInstalled>1668427318</DateInstalled>
+  <DateInstalled>1670186538</DateInstalled>
   <DonateText/>
   <DonateLink/>
   <Requires/>
   <Config Name="Host Path 1" Target="/config" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/bdfr/</Config>
-  <Config Name="Host Path 2" Target="/downloads" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/RedditDownloads/</Config>
-  <Config Name="Host Port 1" Target="7634" Default="7634" Mode="tcp" Description="Required for performing initial OAuth authentication session" Type="Port" Display="always" Required="false" Mask="false">7634</Config>
-  <Config Name="BDFR_WAIT (seconds)" Target="BDFR_WAIT" Default="300" Mode="" Description="Time to wait (in seconds) between bdfr runs" Type="Variable" Display="always" Required="false" Mask="false">300</Config>
-  <Config Name="BDFR_AUTH" Target="BDFR_AUTH" Default="false" Mode="" Description="Run BDFR in authenticated or non-authenticated mode. When set to true, on first run, view docker logs, BDFR provides URL which is needed to complete Oauth authentication. A token will be automatically saved to config file for furture runs." Type="Variable" Display="always" Required="false" Mask="false">false</Config>
-  <Config Name="BDFR_SORT" Target="BDFR_SORT" Default="top" Mode="" Description="Download sort type.  Values: controversial, hot, new, rising, top" Type="Variable" Display="always" Required="false" Mask="false">new</Config>
-  <Config Name="BDFR_NODUPES" Target="BDFR_NODUPES" Default="true" Mode="" Description="Will not redownload files if they already exist somewhere in the download folder tree" Type="Variable" Display="always" Required="false" Mask="false">true</Config>
-  <Config Name="BDFR_VERBOSE" Target="BDFR_VERBOSE" Default="" Mode="" Description="NULL or 0=INFO, 1=DEBUG, 2=FULL. increase the verbosity of the program" Type="Variable" Display="always" Required="false" Mask="false">0</Config>
-  <Config Name="BDFR_DETOX" Target="BDFR_DETOX" Default="false" Mode="" Description="True/False. Whether to run detox to clean-up filenames" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
-  <Config Name="BDFR_RDFIND" Target="BDFR_RDFIND" Default="false" Mode="" Description="True/False. Whether to run rdfind to replace duplicate files" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
-  <Config Name="BDFR_RDFIND_OPTS" Target="BDFR_RDFIND_OPTS" Default="" Mode="" Description="Default action: convert duplicates to symlinks.&#13;&#10;When BDFR_RDFIND set to ture, use this to customize options passed to rdfind. Leave empty for default action" Type="Variable" Display="always" Required="false" Mask="false"/>
-  <Config Name="BDFR_SYMLINKS" Target="BDFR_SYMLINKS" Default="false" Mode="" Description="True/False. Whether to run symlinks, used to change absolute/messy links to relative" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="Host Path 2" Target="/downloads" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/Photos/Reddit/</Config>
+  <Config Name="Initial Offset Delay (sec)" Target="BDFR_OFFSET" Default="-1" Mode="" Description="Delay running BDFR. Useful with multiple BDFR containers.  Helps prevent thundering hurd symptom, where all containers run at the same time.Value: -1=no offset, 0=Random offset (between 1-24hrs), all other values are the offset (in seconds). Default: -1 (no offset)" Type="Variable" Display="always" Required="false" Mask="false">-1</Config>
+  <Config Name="Run Once | Delay between successive runs (sec)" Target="BDFR_WAIT" Default="210600" Mode="" Description="Time to wait (in seconds) between bdfr runs. Zero = Disabled, equates to single-run, docker will exit after one download cycle. Default: 6 hours" Type="Variable" Display="always" Required="false" Mask="false">0</Config>
+  <Config Name="Number of Posts to Download (per Sub-Reddit)" Target="BDFR_POSTLIMIT" Default="10" Mode="" Description="Number of posts to retrieve per sub-redditDefault: 10Note: there is a hard limit of 1000 posts. This is not a limitation of BDFR, but imposed by Reddit." Type="Variable" Display="always" Required="false" Mask="false">10</Config>
+  <Config Name="Run as an authenticated session (true | false)" Target="BDFR_AUTH" Default="false" Mode="" Description="Run BDFR in authenticated or non-authenticated mode. When set to true, on first run, view docker logs, BDFR provides URL which is needed to complete Oauth authentication. A token will be automatically saved to config file for future runs. Default: false" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="Download post order (controversial, hot, new, rising, top)" Target="BDFR_SORT" Default="top" Mode="" Description="Download sort type.  Values: controversial, hot, new, rising, top. Default: new" Type="Variable" Display="always" Required="false" Mask="false">new</Config>
+  <Config Name="Don't redownload existing posts (true | false)" Target="BDFR_NODUPES" Default="true" Mode="" Description="Will not redownload files if they already exist somewhere in the download folder tree. Default: true" Type="Variable" Display="always" Required="false" Mask="false">true</Config>
+  <Config Name="Logging Level" Target="BDFR_VERBOSE" Default="0" Mode="" Description="Logging level. Values: NULL or 0=INFO, 1=DEBUG, 2=FULL. Default: 0" Type="Variable" Display="always" Required="false" Mask="false">0</Config>
+  <Config Name="Run program detox (true | false)" Target="BDFR_DETOX" Default="false" Mode="" Description="Whether to run follow-up program detox to clean-up filenames.  Values: true or false. Default: false" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="Run program rdfind (true | false)" Target="BDFR_RDFIND" Default="false" Mode="" Description="Whether to run follow up program rdfind to replace duplicate files.  Values: true or false. Default: false" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="Custom parameters to pass to rdfind" Target="BDFR_RDFIND_OPTS" Default="" Mode="" Description="When BDFR_RDFIND set to true, use this to customize options passed to rdfind. Leave empty for default action. Refer to https://rdfind.pauldreik.se/rdfind.1.html. Default action: convert duplicates to symlinks." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="Run program symlinks (true | false)" Target="BDFR_SYMLINKS" Default="false" Mode="" Description="Whether to run follow up program symlinks used to change absolute/messy links to relative. Values: true or false. Default: false" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
 </Container>
