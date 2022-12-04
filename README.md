@@ -13,7 +13,8 @@ Docker version of [bulk downloader for reddit](https://github.com/aliparlakci/bu
 | VARIABLE         | DESCRIPTION                                                                                        | DEFAULT |
 |------------------|----------------------------------------------------------------------------------------------------|:-------:|
 | BDFR_POSTLIMIT   | Limit of number of submissions retrieve                                                            |    10   |
-| BDFR_WAIT        | Time to wait (in seconds) between BDFR runs                                                        |   300   |
+| BDFR_OFFSET      | Delay before running BDFR. Useful with multiple BDFR containers. -1=No Delay, 0=Random (1-24hrs)   |   300   |
+| BDFR_WAIT        | Time to wait (in seconds) between BDFR runs. 0 = Don't wait, just exit. Equates to a single-run    |   300   |
 | BDFR_AUTH        | Run as authenticated or unauthenticated Reddit session [true/false]                                |  false  |
 | BDFR_USER        | The user to run-as when running an authenticated session                                           |         |
 | BDFR_VERBOSE     | Verbosity of BDFR logging. 0=INFO, 1=DEBUG, 2=FULL                                                 |    0    |
