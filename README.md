@@ -3,17 +3,18 @@
 Docker version of [bulk downloader for reddit](https://github.com/aliparlakci/bulk-downloader-for-reddit). Currently tracking the development branch.
 
 ## Features
- - Configurable: runs python3 -m bdfr download using the `--opts` option to allow for configuring bdfr via a yaml file or command line args
+ - Configurable: runs python3 -m bdfr download using the `--opts` option to allow for configuring bdfr via a yaml file or command line args.
  - Only on the development branch as of now. See [Options](https://github.com/aliparlakci/bulk-downloader-for-reddit/tree/development#options) and [their example yaml](https://github.com/aliparlakci/bulk-downloader-for-reddit/blob/development/opts_example.yaml).
- - Optional post-download actions to sanitize filenames, remove or convert duplicates to symlinks
- - Configurable period to wait between multiple BDFR runs
+ - Optional post-download actions to sanitize filenames, remove or convert duplicates to symlinks.
+ - Optional delay (random or specific) before running BDFR. Useful with multiple BDFR containers as prevents all containers downloading at the same time.
+ - Configurable period to wait between multiple BDFR runs, incl. no-wait, where container will exit gracefully after a single run.
 
 ## Environment Variables
 
 | VARIABLE         | DESCRIPTION                                                                                        | DEFAULT |
 |------------------|----------------------------------------------------------------------------------------------------|:-------:|
 | BDFR_POSTLIMIT   | Limit of number of submissions retrieve                                                            |    10   |
-| BDFR_OFFSET      | Delay before running BDFR. Useful with multiple BDFR containers. -1=No Delay, 0=Random (1-24hrs)   |   300   |
+| BDFR_OFFSET      | Delay before running BDFR. Useful with multiple BDFR containers. -1=No Delay, 0=Random (1-24hrs)   |    -1   |
 | BDFR_WAIT        | Time to wait (in seconds) between BDFR runs. 0 = Don't wait, just exit. Equates to a single-run    |   300   |
 | BDFR_AUTH        | Run as authenticated or unauthenticated Reddit session [true/false]                                |  false  |
 | BDFR_USER        | The user to run-as when running an authenticated session                                           |         |
@@ -39,6 +40,7 @@ docker run -d \
 -v /your/download/location/downloads \  
 -p 7634:7634 \  
 -e BDFR_POSTLIMIT=9999 \
+-e BDFR_OFFSET=-1 \
 -e BDFR_WAIT=300 \
 -e BDFR_AUTH=false \
 -e BDFR_VERBOSE=0 \
